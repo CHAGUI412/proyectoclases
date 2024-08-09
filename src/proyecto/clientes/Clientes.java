@@ -12,7 +12,7 @@ public class Clientes {
 
     public Clientes(String nombre, String tipoDocumento, String id) {
         this.nombre = nombre;
-        setTipoDocumento(tipoDocumento); // Se llama al método setTipoDocumento
+        setTipoDocumento(tipoDocumento); 
         this.id = id;
         this.detallesCompras = new String[0]; 
         this.preciosCompras = new int[0];
