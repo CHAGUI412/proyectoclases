@@ -10,17 +10,15 @@ public class Clientes {
     private int[] preciosCompras;
     private int contadorCompras;
 
-   
     public Clientes(String nombre, String tipoDocumento, String id) {
         this.nombre = nombre;
-        this.tipoDocumento = tipoDocumento;
+        setTipoDocumento(tipoDocumento); // Se llama al método setTipoDocumento
         this.id = id;
         this.detallesCompras = new String[0]; 
         this.preciosCompras = new int[0];
         this.contadorCompras = 0;
     }
 
-   
     public String getNombre() {
         return nombre;
     }
@@ -34,7 +32,12 @@ public class Clientes {
     }
 
     public void setTipoDocumento(String tipoDocumento) {
-        this.tipoDocumento = tipoDocumento;
+        if (tipoDocumento.equalsIgnoreCase("tarjeta de identidad")) {
+            System.out.println("Documento no permitido. Solo mayores de 18 años.");
+            this.tipoDocumento = "Documento no permitido";
+        } else {
+            this.tipoDocumento = tipoDocumento;
+        }
     }
 
     public String getId() {
@@ -49,29 +52,23 @@ public class Clientes {
         }
     }
 
-    
     public void agregarCompra(String descripcion, int precio) {
-        
         String[] nuevosDetallesCompras = Arrays.copyOf(detallesCompras, detallesCompras.length + 1);
         int[] nuevosPreciosCompras = Arrays.copyOf(preciosCompras, preciosCompras.length + 1);
 
-        
         nuevosDetallesCompras[contadorCompras] = descripcion;
         nuevosPreciosCompras[contadorCompras] = precio;
 
-       
         detallesCompras = nuevosDetallesCompras;
         preciosCompras = nuevosPreciosCompras;
 
         contadorCompras++;
     }
 
-   
     public int historialDeCompra() {
         return contadorCompras;
     }
 
-    
     public String detallesCompra() {
         StringBuilder detalles = new StringBuilder();
         for (int i = 0; i < contadorCompras; i++) {
@@ -83,9 +80,8 @@ public class Clientes {
         return detalles.toString();
     }
 
-    // este main es para pruebas
     public static void main(String[] args) {
-        Clientes cliente1 = new Clientes("Juan Perez", "DNI", "1234567890");
+        Clientes cliente1 = new Clientes("Juan Perez", "cedula", "1234567890");
         cliente1.agregarCompra("Aguardiente", 50000);
         cliente1.agregarCompra("Cerveza", 5000);
         cliente1.agregarCompra("Shot de Tequila", 3000);
