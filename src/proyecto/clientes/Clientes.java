@@ -1,5 +1,7 @@
 package proyecto.clientes;
 
+import java.util.Arrays;
+
 public class Clientes {
     private String nombre;
     private String tipoDocumento;
@@ -8,17 +10,17 @@ public class Clientes {
     private int[] preciosCompras;
     private int contadorCompras;
 
-    // Constructor
+   
     public Clientes(String nombre, String tipoDocumento, String id) {
         this.nombre = nombre;
         this.tipoDocumento = tipoDocumento;
         this.id = id;
-        this.detallesCompras = new String[10]; 
-        this.preciosCompras = new int[10];
+        this.detallesCompras = new String[0]; 
+        this.preciosCompras = new int[0];
         this.contadorCompras = 0;
     }
 
-    
+   
     public String getNombre() {
         return nombre;
     }
@@ -32,11 +34,7 @@ public class Clientes {
     }
 
     public void setTipoDocumento(String tipoDocumento) {
-        if(tipoDocumento.equalsIgnoreCase("tarjeta de identidad")) {
-            System.out.println("No se permite la compra con Tarjeta de Identidad (solo mayores de 18).");
-        } else {
-            this.tipoDocumento = tipoDocumento;
-        }
+        this.tipoDocumento = tipoDocumento;
     }
 
     public String getId() {
@@ -53,35 +51,27 @@ public class Clientes {
 
     
     public void agregarCompra(String descripcion, int precio) {
-        if (contadorCompras >= detallesCompras.length) {
-            expandirArreglos();
-        }
-        detallesCompras[contadorCompras] = descripcion;
-        preciosCompras[contadorCompras] = precio;
+        
+        String[] nuevosDetallesCompras = Arrays.copyOf(detallesCompras, detallesCompras.length + 1);
+        int[] nuevosPreciosCompras = Arrays.copyOf(preciosCompras, preciosCompras.length + 1);
+
+        
+        nuevosDetallesCompras[contadorCompras] = descripcion;
+        nuevosPreciosCompras[contadorCompras] = precio;
+
+       
+        detallesCompras = nuevosDetallesCompras;
+        preciosCompras = nuevosPreciosCompras;
+
         contadorCompras++;
     }
 
-    
-    private void expandirArreglos() {
-        int nuevoTamano = detallesCompras.length * 2;
-        String[] nuevosDetalles = new String[nuevoTamano];
-        int[] nuevosPrecios = new int[nuevoTamano];
-
-        for (int i = 0; i < detallesCompras.length; i++) {
-            nuevosDetalles[i] = detallesCompras[i];
-            nuevosPrecios[i] = preciosCompras[i];
-        }
-
-        detallesCompras = nuevosDetalles;
-        preciosCompras = nuevosPrecios;
-    }
-
-    
+   
     public int historialDeCompra() {
         return contadorCompras;
     }
 
-   
+    
     public String detallesCompra() {
         StringBuilder detalles = new StringBuilder();
         for (int i = 0; i < contadorCompras; i++) {
@@ -93,17 +83,12 @@ public class Clientes {
         return detalles.toString();
     }
 
-    // Método main para pruebas
+    // este main es para pruebas
     public static void main(String[] args) {
-        Clientes cliente1 = new Clientes("Juan Perez", "CEDULA", "1234567890");
+        Clientes cliente1 = new Clientes("Juan Perez", "DNI", "1234567890");
         cliente1.agregarCompra("Aguardiente", 50000);
         cliente1.agregarCompra("Cerveza", 5000);
         cliente1.agregarCompra("Shot de Tequila", 3000);
-
-        // Simulando que hay más de 100 compras para probar la expansión
-        for (int i = 0; i < 150; i++) {
-            cliente1.agregarCompra("Compra " + (i + 1), 1000 * (i + 1));
-        }
 
         System.out.println("Nombre: " + cliente1.getNombre());
         System.out.println("Tipo de Documento: " + cliente1.getTipoDocumento());
